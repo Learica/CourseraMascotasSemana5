@@ -3,25 +3,25 @@ package com.dreamsense.courseramascotas;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
+import com.dreamsense.courseramascotas.adaptador.MascotaAdaptador;
+import com.dreamsense.courseramascotas.adaptador.PageAdapter;
+import com.dreamsense.courseramascotas.fragments.FragmentPerfil;
+import com.dreamsense.courseramascotas.fragments.FragmentRecycler;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Gabriel on 06/07/2016.
@@ -33,9 +33,12 @@ public class ListaMascotas extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private RecyclerView listaMascotas;
+
     public MascotaAdaptador adaptador;
-    ArrayList<Mascota> mascotas;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private Toolbar toolbar;
+    private Toolbar toolbar2;
 
 
     @Override
@@ -43,22 +46,26 @@ public class ListaMascotas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listado_mascotas);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
 
-        listaMascotas = (RecyclerView) findViewById(R.id.rvMascotas);
+        toolbar2 = (Toolbar) findViewById(R.id.toolbar1);
+        //setSupportActionBar(toolbar2);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        ActionBar ab = getSupportActionBar();
+//        ab.setDisplayHomeAsUpEnabled(true);
 
-        listaMascotas.setLayoutManager(llm);
-        inicializarListaMascotas();
-        inicializarAdaptador();
-        respaldo();
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
+        setUpViewPager();
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setLogo(R.drawable.ic_footprint);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -105,37 +112,22 @@ public class ListaMascotas extends AppCompatActivity {
         client.disconnect();
     }
 
-    public void inicializarAdaptador(){
-        MascotaAdaptador adaptador = new MascotaAdaptador(mascotas, this);
-        listaMascotas.setAdapter(adaptador);
-    }
 
-    public void inicializarListaMascotas(){
-        mascotas = new ArrayList<Mascota>();
-        mascotas.add(new Mascota(R.drawable.dog1, "Yayo", "0"));
-        mascotas.add(new Mascota(R.drawable.dog2, "Pancho", "5"));
-        mascotas.add(new Mascota(R.drawable.dog3, "Roger", "2"));
-        mascotas.add(new Mascota(R.drawable.dog4, "Ari", "3"));
-        mascotas.add(new Mascota(R.drawable.dog5, "Luna", "1"));
-        mascotas.add(new Mascota(R.drawable.dog6, "Taco", "0"));
-        mascotas.add(new Mascota(R.drawable.dog7, "Burguer", "6"));
-        mascotas.add(new Mascota(R.drawable.dog8, "Mojo", "4"));
-        mascotas.add(new Mascota(R.drawable.dog9, "Merlín", "2"));
-        mascotas.add(new Mascota(R.drawable.dog10, "Fritanga","1"));
-        mascotas.add(new Mascota(R.drawable.dog11, "Boya", "0"));
+    private ArrayList<Fragment> agregarFragment() {
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new FragmentRecycler());
+        fragments.add(new FragmentPerfil());
+        return fragments;
     }
 
 
-    public void respaldo(){
-        if(!MascotaAdaptador.mascotasFavs.isEmpty()) {
-            for (int x = 0, y=0; x < mascotas.size() && y < MascotaAdaptador.mascotasFavs.size(); x++) {
-                if (mascotas.get(x).getNombre() == MascotaAdaptador.mascotasFavs.get(y).getNombre()) {
-                    mascotas.get(x).setLikes(MascotaAdaptador.mascotasFavs.get(x).getLikes());
-                    y++;
-                }
-            }
-        }
+    private void setUpViewPager() {
+        viewPager.setAdapter(new PageAdapter(getSupportFragmentManager(), agregarFragment()));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_dog_house);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_dog_front);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,19 +138,30 @@ public class ListaMascotas extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()){
             case R.id.action_fav:
                 //Al presionar el botón de favoritos se muestra el nuevo activity con los favs seleccionados
                 if(MascotaAdaptador.mascotasFavs.size() > 0) {
-                    Intent intent = new Intent(ListaMascotas.this, MascotasFavoritos.class);
+                    intent = new Intent(ListaMascotas.this, MascotasFavoritos.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(ListaMascotas.this, "No es posible acceder a esta ventana, no tienes favoritos.", Toast.LENGTH_LONG).show();
                 }
-                return true;
+                break;
 
-                default:
-                    return super.onOptionsItemSelected(item);
+            case R.id.mContacto:
+                //Al activity para información de contacto
+                intent = new Intent(ListaMascotas.this, FormularioContacto.class);
+                startActivity(intent);
+                break;
+
+            case R.id.mAcercaDe:
+                //Al activity para la BIO del contacto.
+                intent = new Intent(ListaMascotas.this, BioContacto.class);
+                startActivity(intent);
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
