@@ -6,6 +6,6 @@ package com.dreamsense.courseramascotas;
 public class Config {
 
     //Aquí va tu correo y tu contraseña
-    public static final String EMAIL = "tucorreo@gmail.com";
+    public static final String EMAIL = "tucorreo";
     public static final String PASSWORD = "tupassword";
 }

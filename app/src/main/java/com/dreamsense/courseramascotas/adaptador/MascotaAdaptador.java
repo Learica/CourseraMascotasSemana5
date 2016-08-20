@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dreamsense.courseramascotas.R;
+import com.dreamsense.courseramascotas.db.ConstructorMascotas;
 import com.dreamsense.courseramascotas.pojo.Mascota;
 
 import java.util.ArrayList;
@@ -45,21 +46,18 @@ public class MascotaAdaptador extends RecyclerView.Adapter<MascotaAdaptador.Masc
             @Override
             public void onClick(View v) {
                 //Aumentar el elemento Likes en uno y agregar cardview a lista de favoritos
-                mascota.setLikes((Integer.parseInt(mascota.getLikes()) + 1)+"");
-                if(mascotasFavs.size()<5) {
-                    if(!verificaRepetidos(mascota)) {
-                        mascotasFavs.add(mascota);
-                        onBindViewHolder(holder, position);
-                        Snackbar.make(v, "Agregado " + mascota.getNombre() + " a favoritos.", Snackbar.LENGTH_SHORT).show();
-                    }else{
-                        Snackbar.make(v, "Este elemento ya se encuentra en tus favoritos.", Snackbar.LENGTH_SHORT).show();
-                    }
-                }else {
-                    Snackbar.make(v, "Ya has alcanzado el número máximo de favoritos.", Snackbar.LENGTH_SHORT).show();
+                if(mascotasFavs.size() <= 5) {
+                    ConstructorMascotas constructorMascotas = new ConstructorMascotas(activity);
+                    Snackbar.make(v, "Agregado " + mascota.getNombre() + " a favoritos.", Snackbar.LENGTH_SHORT).show();
+                    constructorMascotas.darLikeMascota(mascota);
+                    holder.tvLikesDog.setText(constructorMascotas.obtenerLikesContacto(mascota) + "");
+                    agregarMascotaFavorita(mascota); //VERIFICAR QUE SE MODIFIQUE EL DATO EN FAVS DE LA DB
+                }else{
+                    Snackbar.make(v, "Ya no puedes agregar más mascotas a favoritos", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
-        holder.tvLikesDog.setText(mascota.getLikes());
+        holder.tvLikesDog.setText(mascota.getLikes()+"");
     }
 
     @Override
@@ -93,6 +91,14 @@ public class MascotaAdaptador extends RecyclerView.Adapter<MascotaAdaptador.Masc
             tvNombreDog = (TextView) itemView.findViewById(R.id.txtNombreDog);
             tvLikesDog  = (TextView) itemView.findViewById(R.id.txtLikesDog);
             btnLikes    = (ImageButton) itemView.findViewById(R.id.btnLike);
+        }
+    }
+
+    public void agregarMascotaFavorita(Mascota mascota){
+        ConstructorMascotas constructorMascotas = new ConstructorMascotas(activity);
+        if(constructorMascotas.obtenerLikesContacto(mascota) > 0 && !mascotasFavs.contains(mascota)){
+            mascota.setLikes(constructorMascotas.obtenerLikesContacto(mascota));
+            mascotasFavs.add(mascota);
         }
     }
 }

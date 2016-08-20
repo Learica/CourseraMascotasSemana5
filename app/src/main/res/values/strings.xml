@@ -13,7 +13,7 @@
     <string name="etFecha">Fecha Nacimiento</string>
     <string name="enviarmensaje">Enviar Mensaje</string>
     <string name="bioContacto">Bio</string>
-    <string name="tvAbout">Gabriel Quintanar Martínez\nCurso: Desarrollo de Aplicaciones en Android, Coursera</string>
+    <string name="tvAbout">Gabriel Quintanar Martínez\nEstudiante de Ingeniería en Computación, Instituto Politécnico Nacional\nEdad: 22\nCurso: Desarrollo de Aplicaciones en Android, Coursera</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="shadowCI">8.0f</string>
 </resources>

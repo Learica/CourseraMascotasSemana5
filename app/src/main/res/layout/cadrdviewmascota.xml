@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/imgMascota"
             android:layout_width="@dimen/cvWidth"
-            android:layout_height="@dimen/cvHeight"
+            android:layout_height= "@dimen/cvHeight"
             android:src="@drawable/dog1"
             android:scaleType="centerCrop"
             android:layout_gravity="center"/>

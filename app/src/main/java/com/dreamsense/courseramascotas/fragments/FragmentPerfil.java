@@ -54,20 +54,20 @@ public class FragmentPerfil extends Fragment {
 
     public void inicializarListaMascotaPropia() {
         mascotas = new ArrayList<>();
-        mascotas.add(new Mascota(R.drawable.pug, "5"));
-        mascotas.add(new Mascota(R.drawable.pug1, "15"));
-        mascotas.add(new Mascota(R.drawable.pug2, "3"));
-        mascotas.add(new Mascota(R.drawable.pug3, "9"));
-        mascotas.add(new Mascota(R.drawable.pug4, "15"));
-        mascotas.add(new Mascota(R.drawable.pug5, "20"));
-        mascotas.add(new Mascota(R.drawable.pug6, "32"));
-        mascotas.add(new Mascota(R.drawable.pug7, "51"));
-        mascotas.add(new Mascota(R.drawable.pug8, "15"));
-        mascotas.add(new Mascota(R.drawable.pug9, "42"));
-        mascotas.add(new Mascota(R.drawable.pug10, "7"));
-        mascotas.add(new Mascota(R.drawable.pug11, "9"));
-        mascotas.add(new Mascota(R.drawable.pug12, "13"));
-        mascotas.add(new Mascota(R.drawable.pug13, "50"));
+        mascotas.add(new Mascota(R.drawable.pug, 5));
+        mascotas.add(new Mascota(R.drawable.pug1, 15));
+        mascotas.add(new Mascota(R.drawable.pug2, 3));
+        mascotas.add(new Mascota(R.drawable.pug3, 9));
+        mascotas.add(new Mascota(R.drawable.pug4, 15));
+        mascotas.add(new Mascota(R.drawable.pug5, 20));
+        mascotas.add(new Mascota(R.drawable.pug6, 32));
+        mascotas.add(new Mascota(R.drawable.pug7, 51));
+        mascotas.add(new Mascota(R.drawable.pug8, 15));
+        mascotas.add(new Mascota(R.drawable.pug9, 42));
+        mascotas.add(new Mascota(R.drawable.pug10, 7));
+        mascotas.add(new Mascota(R.drawable.pug11, 9));
+        mascotas.add(new Mascota(R.drawable.pug12, 13));
+        mascotas.add(new Mascota(R.drawable.pug13, 50));
     }
 
     public void respaldo() {

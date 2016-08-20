@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.dreamsense.courseramascotas.R;
 import com.dreamsense.courseramascotas.adaptador.MascotaAdaptador;
 import com.dreamsense.courseramascotas.pojo.Mascota;
+import com.dreamsense.courseramascotas.presentador.IRecyclcerViewFragmentPresenter;
+import com.dreamsense.courseramascotas.presentador.RecyclerViewFragmentPresenter;
 
 import java.util.ArrayList;
 
@@ -19,10 +21,11 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentRecycler extends Fragment {
+public class FragmentRecycler extends Fragment implements IRecyclerViewFragmentView{
 
     private RecyclerView listaMascotas;
     ArrayList<Mascota> mascotas;
+    private IRecyclcerViewFragmentPresenter presenter;
 
     public FragmentRecycler() {
         // Required empty public constructor
@@ -33,51 +36,27 @@ public class FragmentRecycler extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fragment_recycler, container, false);
-
         listaMascotas = (RecyclerView) v.findViewById(R.id.rvMascotas);
+        presenter = new RecyclerViewFragmentPresenter(this, getContext());
+        return v;
+    }
 
+    @Override
+    public void generarLinearLayoutVertical() {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         listaMascotas.setLayoutManager(llm);
-        inicializarListaMascotas();
-        inicializarAdaptador();
-        respaldo();
-
-        return v;
     }
 
-
-    public void inicializarAdaptador() {
+    @Override
+    public MascotaAdaptador crearAdaptador(ArrayList<Mascota> mascotas) {
         MascotaAdaptador adaptador = new MascotaAdaptador(mascotas, getActivity());
+        return adaptador;
+    }
+
+    @Override
+    public void inicializarAdaptadorRV(MascotaAdaptador adaptador) {
         listaMascotas.setAdapter(adaptador);
     }
-
-    public void inicializarListaMascotas() {
-        mascotas = new ArrayList<Mascota>();
-        mascotas.add(new Mascota(R.drawable.dog1, "Yayo", "0"));
-        mascotas.add(new Mascota(R.drawable.dog2, "Pancho", "5"));
-        mascotas.add(new Mascota(R.drawable.dog3, "Roger", "2"));
-        mascotas.add(new Mascota(R.drawable.dog4, "Ari", "3"));
-        mascotas.add(new Mascota(R.drawable.dog5, "Luna", "1"));
-        mascotas.add(new Mascota(R.drawable.dog6, "Taco", "0"));
-        mascotas.add(new Mascota(R.drawable.dog7, "Burguer", "6"));
-        mascotas.add(new Mascota(R.drawable.dog8, "Mojo", "4"));
-        mascotas.add(new Mascota(R.drawable.dog9, "Merlín", "2"));
-        mascotas.add(new Mascota(R.drawable.dog10, "Fritanga", "1"));
-        mascotas.add(new Mascota(R.drawable.dog11, "Boya", "0"));
-    }
-
-
-    public void respaldo() {
-        if (!MascotaAdaptador.mascotasFavs.isEmpty()) {
-            for (int x = 0, y = 0; x < mascotas.size() - 1 && y < MascotaAdaptador.mascotasFavs.size() - 1; x++) {
-                if (mascotas.get(x).getNombre() == MascotaAdaptador.mascotasFavs.get(y).getNombre()) {
-                    mascotas.get(x).setLikes(MascotaAdaptador.mascotasFavs.get(x).getLikes());
-                    y++;
-                }
-            }
-        }
-    }
-
 }

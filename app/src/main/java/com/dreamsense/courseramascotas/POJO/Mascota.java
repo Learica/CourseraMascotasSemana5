@@ -4,19 +4,24 @@ package com.dreamsense.courseramascotas.pojo;
  * Created by Gabriel on 06/07/2016.
  */
 public class Mascota {
+    private int id;
     private int foto;
     private String nombre;
-    private String likes;
+    private int likes;
 
-    public Mascota(int foto, String nombre, String likes) {
+    public Mascota(int foto, String nombre, int likes) {
         this.foto = foto;
         this.nombre = nombre;
         this.likes = likes;
     }
 
-    public Mascota(int foto, String likes) {
+    public Mascota(int foto, int likes) {
         this.foto = foto;
         this.likes = likes;
+    }
+
+    public Mascota() {
+
     }
 
     public int getFoto() {
@@ -36,11 +41,19 @@ public class Mascota {
         this.nombre = nombre;
     }
 
-    public String getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(String likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
